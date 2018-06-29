@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+    #My site Name
+    ServerName calebdailyfortune.com
+
+    #Demon process for multiple virtual hosts
+    WSGIDaemonProcess calebdailyfortune threads=5
+
+    #Pointing wsgi script to config file
+    WSGIScriptAlias / /var/www/calebdailyfortune/django.wsgi
+    WSGIProcessGroup calebdailyfortune
+
+    #Your static files location
+    Alias /static/ "/var/www/calebdailyfortune/static/"
+    <Location "/media">
+        SetHandler None
+    </Location>
+    <LocationMatch "\.(jpg|gif|png|js|css)$">
+        SetHandler None
+    </LocationMatch>
+    <Directory /var/www/calebdailyfortune >
+        WSGIProcessGroup calebdailyfortune
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
+</VirtualHost>
